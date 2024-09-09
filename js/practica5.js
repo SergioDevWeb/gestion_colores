@@ -11,25 +11,43 @@ createApp({
     // Método para agregar un nuevo color
     addColor() {
       if (this.newColor.trim() !== '') { // Verifica que el input no esté vacío
-        this.colors.push({ value: this.newColor, editing: false }); // Agrega el nuevo color al array de colores
-        this.newColor = ''; // Resetea el input
-        this.saveColors(); // Guarda los colores en localStorage
-        Swal.fire('¡Registrado!', 'El color ha sido registrado.', 'success'); // Muestra una notificación de éxito
+        const colorExists = this.colors.some(color => color.value.toLowerCase() === this.newColor.toLowerCase()); // Verifica si el color ya existe (ignorando mayúsculas/minúsculas)
+        if (!colorExists) {
+          this.colors.push({ value: this.newColor, editing: false }); // Agrega el nuevo color al array de colores
+          this.newColor = ''; // Resetea el input
+          this.saveColors(); // Guarda los colores en localStorage
+          Swal.fire('¡Registrado!', 'El color ha sido registrado.', 'success'); // Muestra una notificación de éxito
+        } else {
+          Swal.fire('Error', 'El color ya existe.', 'error'); // Muestra una notificación de error
+        }
       }
     },
     // Método para alternar el estado de edición de un color
     toggleEditColor(index) {
-      this.colors[index].editing = !this.colors[index].editing; // Cambia el estado de edición
-      if (!this.colors[index].editing) { // Si se desactiva el modo de edición
-        this.saveColors(); // Guarda los cambios en localStorage
-        Swal.fire('¡Actualizado!', 'El color ha sido actualizado.', 'success'); // Muestra una notificación de éxito
+      const newColor = this.colors[index].value.toLowerCase(); // Convertir el nuevo color a minúsculas
+      const colorExists = this.colors.some((color, i) => color.value.toLowerCase() === newColor && i !== index); // Verifica si el color ya existe (ignorando mayúsculas/minúsculas)
+      if (!colorExists) {
+        this.colors[index].editing = !this.colors[index].editing; // Cambia el estado de edición
+        if (!this.colors[index].editing) { // Si se desactiva el modo de edición
+          this.saveColors(); // Guarda los cambios en localStorage
+          Swal.fire('¡Actualizado!', 'El color ha sido actualizado.', 'success'); // Muestra una notificación de éxito
+        }
+      } else {
+        Swal.fire('Error', 'El color ya existe.', 'error'); // Muestra una notificación de error
       }
     },
     // Método para actualizar un color
     updateColor(index) {
-      this.colors[index].editing = false; // Desactiva el modo de edición
-      this.saveColors(); // Guarda los cambios en localStorage
-      Swal.fire('¡Actualizado!', 'El color ha sido actualizado.', 'success'); // Muestra una notificación de éxito
+      const newColor = this.colors[index].value.toLowerCase(); // Convertir el nuevo color a minúsculas
+      const colorExists = this.colors.some((color, i) => color.value.toLowerCase() === newColor && i !== index); // Verifica si el color ya existe (ignorando mayúsculas/minúsculas)
+      if (!colorExists) {
+        this.colors[index].editing = false; // Desactiva el modo de edición
+        this.saveColors(); // Guarda los cambios en localStorage
+        Swal.fire('¡Actualizado!', 'El color ha sido actualizado.', 'success'); // Muestra una notificación de éxito
+      } else {
+        Swal.fire('Error', 'El color ya existe.', 'error'); // Muestra una notificación de error
+        this.colors[index].editing = true; // Mantiene el modo de edición activo
+      }
     },
     // Método para confirmar y eliminar un color
     confirmDeleteColor(index) {
