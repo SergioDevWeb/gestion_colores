@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Gestión de Colores</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+      .btn-icon {
+        font-size: 1.2rem; /* Reduce icon size */
+        padding: 0.3rem; /* Reduce padding for smaller click area */
+      }
+      .btn-group {
+        display: flex;
+        gap: 0.5rem; /* Add gap between buttons */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="container my-5">
+      <div class="card">
+        <div class="card-header">
+          <h3>Gestión de Colores</h3>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-8">
+              <input v-model="newColor" type="text" placeholder="Ingresa un color" class="form-control" />
+            </div>
+            <div class="col-4 text-end">
+              <button @click="addColor" type="button" class="btn btn-success">Registrar</button>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li v-for="(color, index) in colors" :key="index" class="list-group-item d-flex justify-content-between align-items-center">
+              <span v-if="!color.editing">{{ color.value }}</span>
+              <input v-else v-model="color.value" @keyup.enter="updateColor(index)" class="form-control" />
+              <div class="btn-group">
+                <button @click="toggleEditColor(index)" class="btn btn-warning btn-sm btn-icon">
+                  <i :class="color.editing ? 'bi bi-save' : 'bi bi-pencil'"></i>
+                </button>
+                <button @click="confirmDeleteColor(index)" class="btn btn-danger btn-sm btn-icon">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/practica5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+  </body>
+</html>
